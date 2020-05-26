@@ -53,6 +53,7 @@ const App = () => {
   const handleGood = () => setGood(good + 1)
   const handleNeutral = () => setNeutral(neutral + 1)
   const handleBad = () => setBad(bad + 1)
+  
   return (
     <div>
       <h1>give feedback</h1>
