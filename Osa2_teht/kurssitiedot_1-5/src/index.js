@@ -1,45 +1,64 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-const Header = (head) => {
+const Header = ({ string }) => {
+  return (
+    <h1>
+      {string}
+    </h1>
+  )
+}
+
+const Content = ({ content }) => {
+  console.log(content)
   return (
     <div>
-      <h1>
-        {head.string}
-      </h1>
+      {
+        content.map(part =>
+          <Part key={part.name.slice(0, 5)} part={part} />
+        )
+      }
     </div>
   )
 }
 
-const Content = (cont) => {
-  const [eka, toka, kolmas] = cont.parts
+const Total = ({ exer }) => {
+  let total = 0
+
+  for(let i = 0; i < exer.length; i++) {
+    total += exer[i].exercises
+  }
+
   return (
     <div>
-      <Part str={eka.name} num={eka.exercises} />
-      <Part str={toka.name} num={toka.exercises} />
-      <Part str={kolmas.name} num={kolmas.exercises} />
+      <p>total of {total} exercises </p>
     </div>
   )
 }
 
-const Total = (points) => {
-  const [eka, toka, kolmas] = points.parts
+const Part = ({ part }) => {
+  
   return (
-    <div>
-      <p>Number of exercises {eka.exercises + toka.exercises + kolmas.exercises}</p>
-    </div>
+    <p>
+      {part.name} {part.exercises}
+    </p>
   )
 }
 
-const Part = (prt) => {
+const Course = ({ course }) => {
+
   return (
-    <p>{prt.str} {prt.num}</p>
+    <div>
+      <Header string={course.name} />
+      <Content content={course.parts} />
+      <Total exer={course.parts} />
+    </div>
   )
 }
 
 const App = () => {
   const course = {
-    name: 'Half Stack application development',
+        name: 'Half Stack application development',
     parts: [
       {
         name: 'Fundamentals of React',
@@ -52,16 +71,19 @@ const App = () => {
       {
         name: 'State of a component',
         exercises: 14
+      },
+      {
+        name: 'Redux',
+        exercises: 11,
+        id: 4
       }
     ]
   }
 
   return (
-    <div>
-      <Header string={course.name} />
-      <Content parts={course.parts} />
-      <Total parts={course.parts} />
-    </div>
+      <div>
+        <Course course={course} />
+      </div>
   )
 }
 
