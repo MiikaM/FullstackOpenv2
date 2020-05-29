@@ -12,7 +12,7 @@ const PersonsList = ({ people }) => {
         <div>
             {
                 people.map(person =>
-                    <Person key={person.name} person={person} />
+                    <Person key={person.id} person={person} />
                 )}
         </div>
     )
