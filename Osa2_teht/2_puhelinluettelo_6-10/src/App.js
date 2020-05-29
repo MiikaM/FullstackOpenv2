@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Filter from './components/Filter'
+import PersonsList from './components/PersonsList'
+import PersonsForm from './components/PersonsForm'
 
 const App = () => {
     const [persons, setPersons] = useState([
@@ -10,15 +13,12 @@ const App = () => {
 
     const [newName, setNewName] = useState('')
     const [newNumber, setNewNumber] = useState('')
-
     const [showAll, setShowAll] = useState('')
 
 
 
     const addAndCheckPerson = (event) => {
         event.preventDefault()
-
-        console.log('What happened', event)
 
         for (let i = 0; i < persons.length; i++) {
             if (persons[i].name.trim() === newName.trim()) {
@@ -36,21 +36,14 @@ const App = () => {
         setPersons(persons.concat(personObject))
         setNewName('')
         setNewNumber('')
-
     }
 
-    const handleNameChange = (event) => {
-        console.log('nimi on', event.target.value)
-        setNewName(event.target.value)
-    }
+    const handleNameChange = event => setNewName(event.target.value)
 
-    const handleNumberChange = (event) => {
-        console.log('Numero on', event.target.value)
-        setNewNumber(event.target.value)
-    }
-    const Filter = (event) => {
-        setShowAll(event.target.value)
-    }
+    const handleNumberChange = event => setNewNumber(event.target.value)
+
+    const handleFilter = event => setShowAll(event.target.value)
+
     const personsToShow = showAll === ''
         ? persons
         : persons.filter(person => person.name.toUpperCase().startsWith(showAll.toUpperCase()))
@@ -59,35 +52,9 @@ const App = () => {
     return (
         <div>
             <h2>Phonebook</h2>
-            <form>
-                <div>
-                    filter people with:
-                <input
-                        value={showAll}
-                        onChange={Filter}
-                    />
-                </div>
-            </form>
+            <Filter name={showAll} handleFilter={handleFilter} />
             <h3>Add person</h3>
-            <form onSubmit={addAndCheckPerson}>
-                <div>
-                    name:
-                    <input
-                        value={newName}
-                        onChange={handleNameChange}
-                    />
-                </div>
-                <div>
-                    number:
-                    <input
-                        value={newNumber}
-                        onChange={handleNumberChange}
-                    />
-                </div>
-                <div>
-                    <button type="submit">Add</button>
-                </div>
-            </form>
+            <PersonsForm name={newName} number={newNumber} handleName={handleNameChange} handleNumber={handleNumberChange} handleSubmit={addAndCheckPerson} />
             <h3>Numbers</h3>
             <PersonsList people={personsToShow} />
         </div>
