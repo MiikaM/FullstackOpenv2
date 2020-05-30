@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import CountryInfo from './CountryInfo'
 import ChosenCountry from './ChosenCountry'
 
@@ -8,10 +8,11 @@ const CountryList = ({ countries }) => {
     if (countries.length === 1) {
         return (
             <div>
-                <CountryInfo country={countries[0]} />
+                <ChosenCountry country={countries[0]} />
             </div>
         )
     }
+
     return (
         <div>
             {

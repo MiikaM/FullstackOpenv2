@@ -8,6 +8,7 @@ const App = () => {
     const [countries, setCountries] = useState('')
 
     useEffect(() => {
+        console.log('Täällä ainakin tapahtuu')
         axios
             .get('https://restcountries.eu/rest/v2/all')
             .then(response => {
