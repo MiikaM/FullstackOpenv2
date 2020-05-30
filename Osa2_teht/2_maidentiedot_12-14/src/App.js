@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
-const Country = ({ country }) => {
-    return (
-        <p>
-            {country.name}
-        </p>
-    )
-}
+import CountryList from './components/CountryList'
 
 const App = () => {
     const [allCountries, setAllCountries] = useState([])
@@ -25,7 +20,7 @@ const App = () => {
 
     const countriesToShow = countries === ''
         ? allCountries
-        : allCountries.filter(country => country.toUpperCase().startsWith(countries.toUpperCase()))
+        : allCountries.filter(country => country.name.toUpperCase().startsWith(countries.toUpperCase()))
 
     return (
         <div>
@@ -34,13 +29,7 @@ const App = () => {
                 value={countries}
                 onChange={handleFilter}
             />
-            <div>
-                {
-                    // TODO: Alikomponentit ja if
-                    countriesToShow.map(country =>
-                        <Country key={country.alpha3Code} country={country} />
-                    )}
-            </div>
+            <CountryList countries={countriesToShow} />
         </div>
     )
 }
