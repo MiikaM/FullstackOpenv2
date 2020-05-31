@@ -1,5 +1,6 @@
 import React from 'react'
 
+//Parses the language info and shows the languages as list items
 const CountryLang = ({ language }) => {
 
     return (

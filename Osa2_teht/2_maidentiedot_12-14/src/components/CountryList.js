@@ -2,13 +2,14 @@ import React from 'react'
 import CountryInfo from './CountryInfo'
 import ChosenCountry from './ChosenCountry'
 
+//Checks the length of the country list and acts accordingly calls Chosencountry and CountryInfo components
 const CountryList = ({ countries }) => {
-    if (countries.length > 9) return <p>Too many matches, specify anoter filter</p>
+    if (countries.length > 9) return <p>Too many matches, specify another filter</p>
     
     if (countries.length === 1) {
         return (
             <div>
-                <ChosenCountry country={countries[0]} />
+                <CountryInfo country={countries[0]} />
             </div>
         )
     }

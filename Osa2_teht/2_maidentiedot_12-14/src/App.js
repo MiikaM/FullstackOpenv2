@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-
 import CountryList from './components/CountryList'
+
 
 const App = () => {
     const [allCountries, setAllCountries] = useState([])
     const [countries, setCountries] = useState('')
 
     useEffect(() => {
-        console.log('Täällä ainakin tapahtuu')
+
         axios
             .get('https://restcountries.eu/rest/v2/all')
             .then(response => {

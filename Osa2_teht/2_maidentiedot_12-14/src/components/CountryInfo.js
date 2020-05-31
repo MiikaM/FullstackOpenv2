@@ -1,9 +1,9 @@
 import React from 'react'
 import CountryLang from './CountryLang'
-import Weather from './Wheather'
+import Weather from './Weather'
 
-const CountryInfo = ({ country, weather }) => {
-
+//Shows the country info and calls the weather and countrylang component
+const CountryInfo = ({ country}) => {
     
     return (
         <div>
@@ -16,7 +16,7 @@ const CountryInfo = ({ country, weather }) => {
             </ul>
             <img src={country.flag} alt="Flag" width="300" height="300" />
             <div>
-                <Weather currentWeather={weather.current} name={weather.name} />
+                <Weather place={country.capital} />
             </div>
         </div>
     )
