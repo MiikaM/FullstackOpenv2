@@ -17,11 +17,12 @@ const Person = ({ person, deleteThis }) => {
 
 //Passes each element individually to Person component
 const PersonsList = ({ people, deletePerson }) => {
+    console.log('people are ', people)
     return (
         <div>
             {
                 people.map(person =>
-                    <Person key={person.name} person={person} deleteThis={deletePerson} />
+                    <Person key={person.id} person={person} deleteThis={deletePerson} />
                 )}
 
         </div>
