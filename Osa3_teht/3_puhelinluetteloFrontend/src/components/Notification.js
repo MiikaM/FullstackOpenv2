@@ -9,20 +9,14 @@ const Notification = ({ message }) => {
     if (message === null) {
         return null
     }
-
-    if (message.startsWith('Information')) {
-        return (
-            <div className='error'>
-                {message}
-            </div>
-        )
-    }
+    
+    console.log('message o', message)
 
     return (
-        <div className="notification">
-            {message}
+        <div className={message.type}>
+          {message.message}
         </div>
-    )
+      )
 }
 
 export default Notification

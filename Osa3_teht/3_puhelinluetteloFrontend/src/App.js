@@ -31,6 +31,13 @@ const App = () => {
             })
     }, [])
 
+    const notification = (message, type = 'notification') => {
+        setErrorMessage({ message, type })
+        setTimeout(() => {
+            setErrorMessage(null)
+        }, 5000)
+    }
+
     /* Updating the number for the person*/
     const updateNumber = ({ person }) => {
         const id = person.id
@@ -41,13 +48,10 @@ const App = () => {
                 setPersons(persons.map(person => person.id !== id ? person : returnedPerson))
                 setNewName('')
                 setNewNumber('')
-                setErrorMessage(`${returnedPerson.name}'s number was updated`)
-                setTimeout(() => { setErrorMessage(null) }, 5000)
-
+                notification(`${returnedPerson.name}'s number was updated`)
             })
             .catch(error => {
-                setErrorMessage(`Information of ${changedPerson.name} was already removed from the server`)
-                setTimeout(() => { setErrorMessage(null) }, 5000)
+                notification(error.response.data.error, 'error')
                 setNewName('')
                 setNewNumber('')
                 setPersons(persons.filter(n => n.id !== id))
@@ -58,7 +62,7 @@ const App = () => {
     /*Checks if the person is already in the database if not then adds the person */
     const addAndCheckPerson = (event) => {
         event.preventDefault()
-        
+
         const person = persons.find(n => n.name === newName.trim())
 
         if (person !== undefined) {
@@ -79,11 +83,9 @@ const App = () => {
                 setPersons(persons.concat(returnedPerson))
                 setNewName('')
                 setNewNumber('')
-                setErrorMessage(`Added ${returnedPerson.name} `)
-                setTimeout(() => { setErrorMessage(null) }, 5000)
+                notification(`Added ${returnedPerson.name} `)
             }).catch(error => {
-                setErrorMessage(`Can't add a person with no name`)
-                setTimeout(() => { setErrorMessage(null) }, 5000)
+                notification(error.response.data.error, 'error')
                 setNewName('')
                 setNewNumber('')
             })
@@ -99,13 +101,11 @@ const App = () => {
             personService
                 .deleteObject(id)
                 .then(removed => {
-                    setErrorMessage(`${removable.name} has been removed from the server`)
-                    setTimeout(() => { setErrorMessage(null) }, 2000)
+                    notification(`${removable.name} has been removed from the server`)
                     setPersons(persons.filter(n => n.id !== id))
                 })
                 .catch(error => {
-                    setErrorMessage(`Information of '${removable.name}' was already removed from server`)
-                    setTimeout(() => { setErrorMessage(null) }, 2000)
+                    notification(`Information of '${removable.name}' was already removed from server`)
                 })
 
         }
@@ -128,5 +128,6 @@ const App = () => {
     )
 
 }
+
 
 export default App
