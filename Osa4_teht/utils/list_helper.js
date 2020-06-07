@@ -50,20 +50,22 @@ const mostBlogs = (blogs) => {
 
 const mostLikes = (blogs) => {
   let name = ''
-  let likes2 = 0
+  let likes = 0
+
   const grouped = _.groupBy(blogs, 'author')
 
   _.forEach(grouped, (key) => {
-    if (_.sumBy(key, 'likes') > likes2) {
+    const sum = _.sumBy(key, 'likes')
+
+    if (sum > likes) {
       name = key[0].author
-      likes2 = _.sumBy(key, 'likes')
+      likes = sum
     }
-    console.log('sumby', _.sumBy(key, 'likes'))
   })
 
   const bloggerWithMostLikes = {
     author: name,
-    likes: likes2
+    likes: likes
   }
 
   return bloggerWithMostLikes
