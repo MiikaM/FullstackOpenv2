@@ -44,6 +44,7 @@ const mostBlogs = (blogs) => {
     }))
 
   const bestBlogger = _.maxBy(written, 'blogs')
+
   return bestBlogger
 }
 
