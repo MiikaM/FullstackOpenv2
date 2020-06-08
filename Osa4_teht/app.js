@@ -10,9 +10,10 @@ const mongoose = require('mongoose')
 
 
 const mongoUrl = config.MONGODB_URI
+mongoose.set('runValidators', true)
 logger.info('Connecting to ', mongoUrl)
 
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoUrl, { useCreateIndex: true, useFindAndModify: false, useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     logger.info('Connected to MongoDB')
   })
