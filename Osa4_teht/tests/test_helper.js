@@ -80,27 +80,6 @@ const usersInDb = async () => {
   return users.map(u => u.toJSON())
 }
 
-const loginUser = (user) => {
-  return (done) => {
-    api
-      .post('/api/login')
-      .send({
-        username: 'root',
-        password: 'sekret'
-      })
-      .expect(200)
-      .end(onResponse)
-
-    const onResponse = (err, res) => {
-      user.token = res.body.token
-      return done()
-    }
-  }
-}
-
-
-
-
 module.exports = {
-  initialBlogs, nonExistingId, blogsInDb, blogInDb, usersInDb, loginUser
+  initialBlogs, nonExistingId, blogsInDb, blogInDb, usersInDb
 }

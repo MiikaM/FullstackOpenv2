@@ -1,9 +1,6 @@
 const morgan = require('morgan')
 const logger = require('./logger')
 
-
-
-
 morgan.token('contents', function (req) {
   return JSON.stringify(req.body)
 })

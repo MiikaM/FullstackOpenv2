@@ -40,10 +40,7 @@ describe('Initializing some blogs saved', () => {
 
 
   test('_ID is defined as id', async () => {
-    console.log('user token is ', userToken)
-
     const allBlogs = await api.get('/api/blogs')
-    console.log('all blogs', allBlogs.body)
     expect(allBlogs.body[0].id).toBeDefined()
   })
 
