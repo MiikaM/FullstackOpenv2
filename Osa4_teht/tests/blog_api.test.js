@@ -1,19 +1,49 @@
 const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
 const supertest = require('supertest')
 const helper = require('./test_helper')
 const app = require('../app')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const api = supertest(app)
 
 describe('Initializing some blogs saved', () => {
-  beforeEach(async () => {
+  let userToken = ''
+
+  beforeEach(async (done) => {
     await Blog.deleteMany({})
-    await Blog.insertMany(helper.initialBlogs)
+    await User.deleteMany({})
+
+    const blogObjects = helper.initialBlogs
+      .map(blog => new Blog(blog))
+    const promiseArray = blogObjects.map(blog => blog.save())
+    await Promise.all(promiseArray)
+
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+
+    api
+      .post('/api/login')
+      .send({
+        username: 'root',
+        password: 'sekret'
+      })
+      .end((err, response) => {
+        userToken = response.body.token
+        done()
+      })
   })
 
+
   test('_ID is defined as id', async () => {
+    console.log('user token is ', userToken)
+
     const allBlogs = await api.get('/api/blogs')
+    console.log('all blogs', allBlogs.body)
     expect(allBlogs.body[0].id).toBeDefined()
   })
 
@@ -24,9 +54,9 @@ describe('Initializing some blogs saved', () => {
       .expect('Content-Type', /application\/json/)
   })
 
+
   test('All blogs are returned', async () => {
     const response = await api.get('/api/blogs')
-
     expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
@@ -48,6 +78,7 @@ describe('Initializing some blogs saved', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', 'bearer ' + userToken)
       .send(newBlog)
       .expect(201)
       .expect('Content-type', /application\/json/)
@@ -67,6 +98,7 @@ describe('Initializing some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer ' + userToken)
         .send(newBlog)
         .expect(201)
         .expect('Content-type', /application\/json/)
@@ -88,12 +120,28 @@ describe('Initializing some blogs saved', () => {
 
       await api
         .post('/api/blogs')
+        .set('Authorization', 'bearer ' + userToken)
         .send(newBlog)
         .expect(400)
 
       const blogsAtTheEnd = await helper.blogsInDb()
 
       expect(blogsAtTheEnd).toHaveLength(helper.initialBlogs.length)
+    })
+
+    test('Cant add a blog without a token', async () => {
+      const noBlog = {
+        title: 'Testing in npm',
+        author: 'Miika Mikkonen',
+        url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+        likes: 10
+      }
+
+      await api
+        .post('/api/blogs')
+        .send(noBlog)
+        .expect(401)
+        .expect('Content-type', /application\/json/)
     })
   })
 
@@ -159,14 +207,31 @@ describe('Initializing some blogs saved', () => {
 
     test('a blog can be deleted returns with status code 204', async () => {
       const blogAtStart = await helper.blogsInDb()
-      const blogToDelete = blogAtStart[0]
+      const delBlog = {
+        title: 'Testing in npm',
+        author: 'Miika Mikkonen',
+        url: 'http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html',
+        likes: 10
+      }
+
+      await api
+        .post('/api/blogs')
+        .set('Authorization', 'bearer ' + userToken)
+        .send(delBlog)
+        .expect(201)
+        .expect('Content-type', /application\/json/)
+
+      const blogToDel = await helper.blogInDb(delBlog)
+
+      const blogToDelete = blogToDel[0]
 
       await api
         .delete(`/api/blogs/${blogToDelete.id}`)
+        .set('Authorization', 'bearer ' + userToken)
         .expect(204)
 
       const blogsAtEnd = await helper.blogsInDb()
-      expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1)
+      expect(blogsAtEnd).toHaveLength(blogAtStart.length)
 
       const contents = blogsAtEnd.map(r => r.title)
       expect(contents).not.toContain(blogToDelete.title)
