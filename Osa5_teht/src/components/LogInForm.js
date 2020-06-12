@@ -1,12 +1,11 @@
 import React from 'react'
-import Blog from './Blog'
 
-const LogInForm = ({ username, password, user, blogs, setPassword, setUsername }) => {
+const LogInForm = ({ username, password, user, blogs, setPassword, setUsername, logIn }) => {
 
   if (user === null) {
     return (
       <div>
-        <form>
+        <form onSubmit={logIn}>
           <div>
             username
             <input
@@ -30,15 +29,6 @@ const LogInForm = ({ username, password, user, blogs, setPassword, setUsername }
       </div>
     )
   }
-
-  return (
-    <div>
-      <h2>Blogs</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </div>
-  )
 }
 
 export default LogInForm
