@@ -13,10 +13,10 @@ const Notification = ({ message }) => {
   console.log('message o', message)
 
   return (
-    <div className={message.type} > 
-    {message.message} 
+    <div className={message.type} >
+      {message.message}
     </div>
-    )
+  )
 }
 
 export default Notification
