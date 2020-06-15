@@ -93,7 +93,7 @@ describe('Blog ', function () {
 
         cy.get('.blog2').find('button').contains('like').as('likeButton')
         cy.get('@likeButton').click()
-        cy.contains('You liked the blog `A blog created by cypress`')
+        cy.contains("You liked the blog 'A blog created by cypress'")
         cy.contains('likes: 1')
       })
 
