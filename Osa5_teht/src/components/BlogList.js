@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Blog from './Blog'
 
 
 const BlogList = ({ blogs, deleteBlog, handleLike }) => {
   let sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
   return (
-    <div>
+    <div id='blogList'>
       <h2>Blogs</h2>
       {
         sortedBlogs.map(blog =>

@@ -7,10 +7,6 @@ import BlogList from './components/BlogList'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 
-/* TODO   user creating new blogs */
-/* TODO   Notifkaatiot samanlailla kun puhelinluettelo*/
-
-
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
@@ -19,9 +15,10 @@ const App = () => {
   const blogFormRef = React.createRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs(blogs)
-    )
+    blogService.getAll()
+      .then(blogs =>
+        setBlogs(blogs)
+      )
   }, [])
 
   useEffect(() => {
@@ -82,6 +79,7 @@ const App = () => {
 
     try {
       await blogService.deleteObject(id)
+      setBlogs(blogs.filter(blog => blog.id !== id))
       notification('Blog has been removed')
     } catch (exception) {
       notification(exception.response.data.error, 'error')
@@ -91,9 +89,13 @@ const App = () => {
     }
   }
 
-  const handleLike = async (blogObject, id) => {
+  const handleLike = async ( id, blogObject) => {
+    console.log('blogi o', blogObject)
+    console.log('Blogin id on', id)
     try {
-      await blogService.update(id, blogObject)
+      const updatedBlog = await blogService.update(id, blogObject)
+      console.log('updated blog o', updatedBlog)
+      setBlogs(blogs.map(blog => blog.id !== updatedBlog.id ? blog : updatedBlog))
       notification(`You liked the blog '${blogObject.title}'`)
     } catch (exception) {
       console.log('error o', exception.response.data.error)

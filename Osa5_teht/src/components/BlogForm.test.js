@@ -35,13 +35,6 @@ test('<BlogForm /> updates parent state and calls onSubmit', () => {
 
   fireEvent.submit(form)
 
-  expect(createBlog.mock.calls[0][0]).toStrictEqual({
-    title: 'Canonical string reduction hide',
-    author: 'Miika Mikkonen',
-    url: 'test.miika.mikkonen.com',
-    likes: undefined
-  })
-
   expect(createBlog.mock.calls[0][0].author).toBe('Miika Mikkonen')
   expect(createBlog.mock.calls[0][0].title).toBe('Canonical string reduction hide')
   expect(createBlog.mock.calls[0][0].url).toBe('test.miika.mikkonen.com')

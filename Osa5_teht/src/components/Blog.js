@@ -17,6 +17,17 @@ const Blog = ({ blog, deleteBlog, addLikes }) => {
     deleteBlog(blog.id)
   }
 
+  const handleLike = () => {
+    const likedBlog = {
+      likes: blog.likes + 1,
+      title: blog.title,
+      author: blog.author,
+      url: blog.url
+    }
+
+    addLikes( blog.id, likedBlog)
+  }
+
 
   return (
     <div>
@@ -28,7 +39,7 @@ const Blog = ({ blog, deleteBlog, addLikes }) => {
         Title: {blog.title} <button onClick={toggleView}>hide</button> <br />
         url: {blog.url} <br />
         likes: {blog.likes}
-        <button onClick={addLikes}>like</button><br />
+        <button onClick={handleLike}>like</button><br />
         Author: {blog.author} <br />
         <button onClick={deleteObject}>remove</button>
       </div>
