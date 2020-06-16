@@ -34,11 +34,8 @@ const AnecdoteList = () => {
             key={anecdote.id}
             anecdote={anecdote}
             handleClick={() => {
-              dispatch(vote(anecdote.id))
-              dispatch(changeNotification(`You voted for '${anecdote.content}'`))
-              setTimeout(() => {
-                dispatch(changeNotification(null))
-              }, 5000)
+              dispatch(vote(anecdote))
+              dispatch(changeNotification(`You voted for '${anecdote.content}'`, 5))
             }
             }
           />

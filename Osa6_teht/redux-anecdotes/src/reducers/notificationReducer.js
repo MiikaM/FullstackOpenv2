@@ -1,9 +1,23 @@
 
-export const changeNotification = notification => {
+export const changeNotification = (notification, time) => {
+  console.log('noti and time', notification, time)
+  return dispatch => {
+    dispatch({
+      type: 'NOTIFICATION',
+      notification: notification
+    })
+    setTimeout(() => {
+      dispatch(clearNotification())
+    }, time * 1000)
+  }
+}
 
-  return {
-    type: 'NOTIFICATION',
-    notification
+const clearNotification = () => {
+  return dispatch => {
+    dispatch({
+      type: 'NOTIFICATION',
+      notification: null
+    })
   }
 }
 
