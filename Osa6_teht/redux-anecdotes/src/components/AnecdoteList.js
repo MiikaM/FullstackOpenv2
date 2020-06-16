@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { vote } from '../reducers/anecdoteReducer'
+import { changeNotification } from '../reducers/notificationReducer'
 
 const Anecdote = ({ anecdote, handleClick }) => {
   return (
@@ -18,7 +19,11 @@ const Anecdote = ({ anecdote, handleClick }) => {
 
 const AnecdoteList = () => {
   const dispatch = useDispatch()
-  const anecdotes = useSelector(state => state)
+  const anecdotes = useSelector(({ filter, anecdotes }) => {
+    return filter === ''
+      ? anecdotes
+      : anecdotes.filter(anecdote => anecdote.content.toUpperCase().includes(filter.toUpperCase()))
+  })
 
   const sortedAnecdotes = anecdotes.sort((a, b) => b.votes - a.votes)
   return (
@@ -28,8 +33,13 @@ const AnecdoteList = () => {
           <Anecdote
             key={anecdote.id}
             anecdote={anecdote}
-            handleClick={() =>
+            handleClick={() => {
               dispatch(vote(anecdote.id))
+              dispatch(changeNotification(`You voted for '${anecdote.content}'`))
+              setTimeout(() => {
+                dispatch(changeNotification(null))
+              }, 5000)
+            }
             }
           />
         )
