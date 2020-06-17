@@ -1,12 +1,15 @@
+let timeOutId = null
 
 export const changeNotification = (notification, time) => {
-  console.log('noti and time', notification, time)
+  if (timeOutId !== null) clearTimeout(timeOutId)
+  timeOutId = null
   return dispatch => {
     dispatch({
       type: 'NOTIFICATION',
       notification: notification
     })
-    setTimeout(() => {
+
+    timeOutId = setTimeout(() => {
       dispatch(clearNotification())
     }, time * 1000)
   }

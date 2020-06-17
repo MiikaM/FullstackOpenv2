@@ -11,9 +11,7 @@ export const createAnecdote = (content) => {
 }
 
 export const vote = (anecdote) => {
-  console.log('anecdote is', anecdote)
   const copy = { ...anecdote, votes: anecdote.votes + 1 }
-  console.log('copy is', copy)
   return async dispatch => {
     const updateObject = await anecdoteService.updateObject(copy)
     dispatch({
@@ -40,7 +38,6 @@ const reducer = (state = [], action) => {
     case 'NEW_ANECDOTE':
       return state.concat(action.data)
     case 'VOTE':
-      console.log('action data on', action.data)
       const id = action.data.id
       return state.map(anecdote =>
         anecdote.id !== id ? anecdote : action.data
