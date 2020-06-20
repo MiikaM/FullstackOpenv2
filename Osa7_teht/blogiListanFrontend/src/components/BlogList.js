@@ -1,5 +1,9 @@
 import React from 'react'
 import Blog from './Blog'
+import {
+  TableContainer,
+  Paper,
+} from '@material-ui/core'
 
 
 const BlogList = ({ blogs, deleteBlog, handleLike }) => {
@@ -7,10 +11,12 @@ const BlogList = ({ blogs, deleteBlog, handleLike }) => {
   return (
     <div id='blogList'>
       <h2>Blogs</h2>
-      {
-        sortedBlogs.map(blog =>
-          <Blog key={blog.id} blog={blog} deleteBlog={deleteBlog} addLikes={handleLike} />
-        )}
+      <TableContainer component={Paper}>
+        {
+          sortedBlogs.map(blog =>
+            <Blog key={blog.id} blog={blog} deleteBlog={deleteBlog} addLikes={handleLike} />
+          )}
+      </TableContainer>
     </div>
   )
 }

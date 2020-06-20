@@ -1,5 +1,11 @@
 import React, { useState } from 'react'
-
+import { Button } from 'react-bootstrap'
+import {
+  TableCell,
+  TableRow,
+  TableBody,
+  Table
+} from '@material-ui/core'
 
 
 
@@ -25,25 +31,46 @@ const Blog = ({ blog, deleteBlog, addLikes }) => {
       url: blog.url
     }
 
-    addLikes( blog.id, likedBlog)
+    addLikes(blog.id, likedBlog)
   }
 
 
   return (
-    <div>
-      <div className='blog' style={hideWhenVisible}>
-        {blog.title} {blog.author}
-        <button onClick={toggleView}>view</button>
-      </div>
-      <div className='blog2' style={showWhenVisible}>
-        Title: {blog.title} <button onClick={toggleView}>hide</button> <br />
-        url: {blog.url} <br />
-        likes: {blog.likes}
-        <button onClick={handleLike}>like</button><br />
-        Author: {blog.author} <br />
-        <button onClick={deleteObject}>remove</button>
-      </div>
-    </div>
+    <Table>
+      <TableBody>
+        <TableRow className='blog' style={hideWhenVisible}>
+          <TableCell >
+            {blog.title} {blog.author}
+            <Button variant='contained' color='primary' onClick={toggleView}>view</Button>
+          </TableCell>
+        </TableRow>
+      </TableBody >
+      <TableBody className='blog2' style={showWhenVisible}>
+        <TableRow >
+          <TableCell>
+            Title: {blog.title} <Button variant='contained' color='default' onClick={toggleView}>hide</Button> <br />
+          </TableCell>
+        </TableRow >
+        <TableRow>
+          <TableCell>
+            url: {blog.url} <br />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            likes: {blog.likes}
+            <Button variant='contained' color='primary' onClick={handleLike}>like</Button><br />
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            Author: {blog.author} <br />
+            <Button variant='contained' color='primary' onClick={deleteObject}>remove</Button>
+          </TableCell>
+        </TableRow >
+      </TableBody>
+    </Table>
+
   )
 }
 
