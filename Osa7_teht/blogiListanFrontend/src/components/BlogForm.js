@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
 import {
   TextField, Button
 } from '@material-ui/core'
 
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
+  const dispatch = useDispatch()
+
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
@@ -13,14 +17,14 @@ const BlogForm = ({ createBlog }) => {
   const handleAuthor = event => setAuthor(event.target.value)
   const handleUrl = event => setUrl(event.target.value)
 
-  const addBlog = async (event) => {
+  const addBlog = (event) => {
     event.preventDefault()
 
-    createBlog({
+    dispatch(createBlog({
       title: title.trim(),
       author: author.trim(),
       url: url.trim(),
-    })
+    }))
 
     setTitle('')
     setAuthor('')
@@ -56,7 +60,7 @@ const BlogForm = ({ createBlog }) => {
           onChange={handleUrl}
         />
       </div>
-      <Button  variant='contained' color='primary' type="submit">save</Button>
+      <Button variant='contained' color='primary' type="submit">save</Button>
     </form >
   )
 }

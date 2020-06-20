@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { vote, deleteBlog } from '../reducers/blogReducer'
+
 import { Button } from 'react-bootstrap'
+
 import {
   TableCell,
   TableRow,
@@ -7,9 +11,12 @@ import {
   Table
 } from '@material-ui/core'
 
+import { changeNotification } from '../reducers/notificationReducer'
 
 
-const Blog = ({ blog, deleteBlog, addLikes }) => {
+
+const Blog = ({ blog }) => {
+  const dispatch = useDispatch()
   const [view, setView] = useState(false)
 
   const hideWhenVisible = { display: view ? 'none' : '' }
@@ -20,18 +27,17 @@ const Blog = ({ blog, deleteBlog, addLikes }) => {
   }
 
   const deleteObject = () => {
-    deleteBlog(blog.id)
+
+    try {
+      dispatch(deleteBlog(blog.id))
+      dispatch(changeNotification('Blog has been removed'))
+    } catch (exception) {
+      dispatch(changeNotification(exception.response.data.error, 'error'))
+    }
   }
 
   const handleLike = () => {
-    const likedBlog = {
-      likes: blog.likes + 1,
-      title: blog.title,
-      author: blog.author,
-      url: blog.url
-    }
-
-    addLikes(blog.id, likedBlog)
+    dispatch(vote(blog.id, blog))
   }
 
 

@@ -1,6 +1,6 @@
 let timeOutId = null
 
-export const changeNotification = (notification, messageType = 'success', time) => {
+export const changeNotification = (notification, messageType = 'success', time = 5) => {
   if (timeOutId !== null) clearTimeout(timeOutId)
   timeOutId = null
   return dispatch => {

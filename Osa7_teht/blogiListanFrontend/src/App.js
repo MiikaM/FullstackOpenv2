@@ -10,6 +10,8 @@ import Togglable from './components/Togglable'
 import { Button, Navbar, Nav } from 'react-bootstrap'
 import Container from '@material-ui/core/Container'
 
+
+import { initializeBlogs, vote } from './reducers/blogReducer'
 import { changeNotification } from './reducers/notificationReducer'
 
 
@@ -31,17 +33,13 @@ const App = () => {
   const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
 
   const blogFormRef = React.createRef()
 
 
   useEffect(() => {
-    blogService.getAll()
-      .then(blogs =>
-        setBlogs(blogs)
-      )
-  }, [])
+    dispatch(initializeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -72,9 +70,7 @@ const App = () => {
       notification(`You have logged in as ${user.name}`)
     } catch (exception) {
       notification('wrong credentials', 'error')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
+
     }
   }
 
@@ -86,9 +82,6 @@ const App = () => {
       notification(`New Blog: ${blogObject.title} by ${blogObject.author} has been added`)
     } catch (exception) {
       notification(exception.response.data.error, 'error')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
     }
   }
 
@@ -102,26 +95,17 @@ const App = () => {
       notification('Blog has been removed')
     } catch (exception) {
       notification(exception.response.data.error, 'error')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
     }
   }
 
   const handleLike = async (id, blogObject) => {
-    console.log('blogi o', blogObject)
-    console.log('Blogin id on', id)
     try {
+      dispatch(vote)
       const updatedBlog = await blogService.update(id, blogObject)
-      console.log('updated blog o', updatedBlog)
       setBlogs(blogs.map(blog => blog.id !== updatedBlog.id ? blog : updatedBlog))
       notification(`You liked the blog '${blogObject.title}'`)
     } catch (exception) {
-      console.log('error o', exception.response.data.error)
       notification(exception.response.data.error, 'error')
-      setTimeout(() => {
-        setErrorMessage(null)
-      }, 5000)
     }
   }
 
