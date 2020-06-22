@@ -1,5 +1,6 @@
 const { ApolloServer, UserInputError, gql } = require('apollo-server')
 const { v4: uuid } = require('uuid');
+const { _ } = require('lodash')
 
 let authors = [
   {
@@ -117,15 +118,47 @@ const resolvers = {
     authorsCount: () => authors.length,
     allAuthors: () => authors,
     allBooks: (root, args) => {
-      if (!(authors.find(p => p.name === args.author))) {
-        throw new UserInputError('No suc author in the database', {
-          invalidArgs: args.author
-        })
+      let booksByGenre = books.filter(p => p.genres.find(g => g === args.genre))
+
+      let booksByAuthor = books.filter(book => book.author === args.author)
+
+      if (args.genre && args.author) {
+
+        if (!(authors.find(p => p.name === args.author))||!(books.find(p => p.genres.find(g => g === args.genre)))) {
+          throw new UserInputError('No such author with such genre in the database', {
+            invalidArgs: args.author
+          })
+        }
+        
+        let genreAndAuthor = _.intersection(booksByGenre, booksByAuthor)
+
+        return genreAndAuthor
       }
 
-      const booksByAuthor = books.filter(book => book.author === args.author)
-      return booksByAuthor
-    },   
+      if (args.author) {
+
+        if (!(authors.find(p => p.name === args.author))) {
+          throw new UserInputError('No such author in the database', {
+            invalidArgs: args.author
+          })
+        }
+        
+        return booksByAuthor 
+      }
+
+      if (args.genre) {
+
+        if (!(books.find(p => p.genres.find(g => g === args.genre)))) {
+          throw new UserInputError('No such genre in the database', {
+            invalidArgs: args.author
+          })
+        }
+
+        return booksByGenre
+      }
+
+      return books
+    },
   },
   Author: {
     bookCount: (root) => {
