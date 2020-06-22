@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {
   Switch, Route, Link, Redirect, useRouteMatch
 } from "react-router-dom"
-import { useField, useReset } from './hooks'
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {

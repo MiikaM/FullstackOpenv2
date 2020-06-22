@@ -11,9 +11,6 @@ import {
   Table
 } from '@material-ui/core'
 
-import { changeNotification } from '../reducers/notificationReducer'
-
-
 
 const Blog = ({ blog }) => {
   const dispatch = useDispatch()
@@ -27,13 +24,7 @@ const Blog = ({ blog }) => {
   }
 
   const deleteObject = () => {
-
-    try {
-      dispatch(deleteBlog(blog.id))
-      dispatch(changeNotification('Blog has been removed'))
-    } catch (exception) {
-      dispatch(changeNotification(exception.response.data.error, 'error'))
-    }
+    dispatch(deleteBlog(blog.id))
   }
 
   const handleLike = () => {

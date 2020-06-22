@@ -1,4 +1,6 @@
 import blogService from '../services/blogs'
+import { changeNotification } from './notificationReducer'
+
 
 export const createBlog = (blog) => {
   console.log('Blog o')
@@ -13,13 +15,18 @@ export const createBlog = (blog) => {
 
 export const deleteBlog = (id) => {
   return async dispatch => {
-    await blogService.deleteObject(id)
-    dispatch({
-      type: 'DELETE',
-      data: {
-        id
-      }
-    })
+    try {
+      await blogService.deleteObject(id)
+      dispatch({
+        type: 'DELETE',
+        data: {
+          id
+        }
+      })
+      dispatch(changeNotification('Blog has been removed'))
+    } catch (exception) {
+      dispatch(changeNotification(exception.response.data.error, 'error'))
+    }
   }
 }
 
@@ -32,12 +39,16 @@ export const vote = (id, blog) => {
   }
 
   return async dispatch => {
-    const updateObject = await blogService.update(id, copy)
-    dispatch({
-      type: 'VOTE',
-      data: updateObject
-    })
-
+    try {
+      const updateObject = await blogService.update(id, copy)
+      dispatch({
+        type: 'VOTE',
+        data: updateObject
+      })
+      dispatch(changeNotification(`You liked the blog '${blog.title}'`))
+    } catch (exception) {
+      dispatch(changeNotification(exception.response.data.error, 'error'))
+    }
   }
 }
 

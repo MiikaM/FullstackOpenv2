@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core'
 
 
-const BlogList = ({ deleteBlog, handleLike }) => {
+const BlogList = () => {
   const blogs = useSelector(state => state.blogs)
 
   let sortedBlogs = blogs.sort((a, b) => b.likes - a.likes)
@@ -17,7 +17,7 @@ const BlogList = ({ deleteBlog, handleLike }) => {
       <TableContainer component={Paper}>
         {
           sortedBlogs.map(blog =>
-            <Blog key={blog.id} blog={blog} deleteBlog={deleteBlog} addLikes={handleLike} />
+            <Blog key={blog.id} blog={blog} />
           )}
       </TableContainer>
     </div>

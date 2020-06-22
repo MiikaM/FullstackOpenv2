@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { loginUser } from '../reducers/loginReducer'
 import {
   TextField, Button
 } from '@material-ui/core'
 
-const LogInForm = ({ LoggingIn }) => {
+const LogInForm = () => {
+  const dispatch = useDispatch()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -13,10 +16,10 @@ const LogInForm = ({ LoggingIn }) => {
   const logIn = async (event) => {
     event.preventDefault()
 
-    LoggingIn({
+    dispatch(loginUser({
       username: username,
       password: password
-    })
+    }))
 
     setUsername('')
     setPassword('')
