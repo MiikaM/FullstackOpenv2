@@ -88,9 +88,22 @@ let books = [
 
 const typeDefs = gql`
 
+  type Mutation {
+    addBook(
+    title: String!
+    genres: [String]!
+    author: String!
+    published: Int!
+    ): Book
+    addAuthor(
+      name: String!
+      born: Int!
+    ): Author
+  }
+
   type Author {
     name: String!
-    born: Int!
+    born: Int
     bookCount: Int!
     id: ID!
   }
@@ -124,12 +137,12 @@ const resolvers = {
 
       if (args.genre && args.author) {
 
-        if (!(authors.find(p => p.name === args.author))||!(books.find(p => p.genres.find(g => g === args.genre)))) {
+        if (!(authors.find(p => p.name === args.author)) || !(books.find(p => p.genres.find(g => g === args.genre)))) {
           throw new UserInputError('No such author with such genre in the database', {
             invalidArgs: args.author
           })
         }
-        
+
         let genreAndAuthor = _.intersection(booksByGenre, booksByAuthor)
 
         return genreAndAuthor
@@ -142,8 +155,8 @@ const resolvers = {
             invalidArgs: args.author
           })
         }
-        
-        return booksByAuthor 
+
+        return booksByAuthor
       }
 
       if (args.genre) {
@@ -164,6 +177,35 @@ const resolvers = {
     bookCount: (root) => {
       const booksByAuthor = books.filter(book => book.author === root.name)
       return booksByAuthor.length
+    }
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      if (books.find(b => b.title === args.title)) {
+        throw new UserInputError('Book already in the database', {
+          invalidArgs: args.title,
+        })
+      }
+
+      if (!(authors.find(a => a.name === args.author))) {
+        const newAuthor = { name: args.author, born: null}
+        authors = authors.concat(newAuthor)
+      }
+
+      const book = { ...args, id: uuid() }
+      books = books.concat(book)
+      return book
+    },
+    addAuthor: (root, args) => {
+      if (authors.find(b => b.name === args.name)) {
+        throw new UserInputError('Author already in the database', {
+          invalidArgs: args.name
+        })
+      }
+      
+      const author = { ...args, id: uuid() }
+      authors = authors.concat(author)
+      return author
     }
   }
 }
