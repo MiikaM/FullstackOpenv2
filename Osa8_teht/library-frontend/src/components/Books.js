@@ -5,7 +5,7 @@ const Books = (props) => {
     return null
   }
 
-  const books = []
+  const books = props.books
 
   return (
     <div>
@@ -15,10 +15,10 @@ const Books = (props) => {
         <tbody>
           <tr>
             <th></th>
-            <th>
+            <th align='center'>
               author
             </th>
-            <th>
+            <th align='right'>
               published
             </th>
           </tr>

@@ -1,11 +1,16 @@
-  
+
 import React from 'react'
 
+
 const Authors = (props) => {
+  
   if (!props.show) {
     return null
   }
-  const authors = []
+
+  console.log({ props })
+
+  const authors = props.authors
 
   return (
     <div>
@@ -14,10 +19,10 @@ const Authors = (props) => {
         <tbody>
           <tr>
             <th></th>
-            <th>
+            <th align='right'>
               born
             </th>
-            <th>
+            <th align='right'>
               books
             </th>
           </tr>
@@ -30,7 +35,6 @@ const Authors = (props) => {
           )}
         </tbody>
       </table>
-
     </div>
   )
 }
