@@ -99,6 +99,10 @@ const typeDefs = gql`
       name: String!
       born: Int!
     ): Author
+    editAuthor(
+      name: String!
+      setBornTo: Int!
+    ): Author
   }
 
   type Author {
@@ -196,16 +200,16 @@ const resolvers = {
       books = books.concat(book)
       return book
     },
-    addAuthor: (root, args) => {
-      if (authors.find(b => b.name === args.name)) {
-        throw new UserInputError('Author already in the database', {
-          invalidArgs: args.name
-        })
+    editAuthor: (root, args) => {
+      const authorFind = authors.find(a => a.name === args.name)
+
+      if (!authorFind) {
+        return null
       }
-      
-      const author = { ...args, id: uuid() }
-      authors = authors.concat(author)
-      return author
+
+      const editedAuthor = {...authorFind, born: args.setBornTo}
+      authors = authors.map(a => a.name === authorFind.name ? editedAuthor : a)
+      return editedAuthor
     }
   }
 }
