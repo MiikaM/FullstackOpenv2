@@ -106,7 +106,6 @@ const resolvers = {
     },
     me: (root, args, context) => {
 
-      console.log('context on', context)
       return context.currentUser
     }
   },
