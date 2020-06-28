@@ -74,7 +74,7 @@ type Book {
 type Query {
   booksCount: Int!
   authorsCount: Int!
-  allBooks(author: String, genre: [String]): [Book!]!
+  allBooks(author: String, genre: String): [Book!]!
   allAuthors: [Author!]!
   me: User
 }
@@ -87,18 +87,15 @@ const resolvers = {
       return Author.find({})
     },
     allBooks: async (root, args) => {
-
-      if (args.genre) {
+      if (args.genre && args.genre.length > 1) {
         let booksByGenre = null
-        console.log('genre', args.genre[0])
         try {
-          booksByGenre = await Book.find({ genres: args.genre[0] })
+          booksByGenre = await Book.find({ genres: args.genre })
         } catch (error) {
           throw new UserInputError('No such genre in the database', {
             invalidArgs: args.author
           })
         }
-
         return booksByGenre
       }
 
@@ -115,6 +112,22 @@ const resolvers = {
       return booksByAuthor.length
     }
   },
+  Book: {
+    author: async (root) => {
+      const author = await Author.findById(root.author)
+      if(!author) {
+        return new UserInputError(`Author doesn't exist`, {
+          invalidArgs: root
+        })
+      }
+
+      return {
+        name: author.name,
+        born: author.born,
+        bookCount: author.bookCount
+      }
+    }
+  },
   Mutation: {
     addBook: async (root, args, { currentUser }) => {
       let authorId = null
@@ -126,7 +139,6 @@ const resolvers = {
 
       try {
         let isBook = await Book.findOne({ title: args.title })
-        console.log('löytykö bookki', isBook)
         if (isBook) {
           return new UserInputError('Book already in the database', {
             invalidArgs: args.title,
@@ -134,19 +146,17 @@ const resolvers = {
         }
       } catch (error) {
         console.log('error yksi', { error })
-      } finally { console.log('Eka try') }
+      } 
 
       try {
         let isAuthor = await Author.findOne({ name: args.author })
 
-        console.log({ isAuthor })
 
         if (isAuthor) {
           authorId = isAuthor._id
         } else {
           newAuthor = new Author({ name: args.author, born: null })
 
-          console.log({ newAuthor })
           try {
             if (args.title.length > 1) {
               await newAuthor.save()
@@ -160,7 +170,6 @@ const resolvers = {
           authorId = newAuthor._id
         }
       } catch (error) {
-        console.log('error kaksi on', error)
         if (error.error.startsWith('UserInputError')) {
           return new UserInputError(error, {
             invalidArgs: args,
@@ -169,8 +178,6 @@ const resolvers = {
       }
 
       const book = new Book({ ...args, author: authorId })
-
-      console.log({ book })
 
       try {
         await book.save()
@@ -196,8 +203,6 @@ const resolvers = {
 
       author.born = args.setBornTo
 
-
-      console.log({ author })
       try {
         await author.save()
       } catch (error) {
@@ -210,9 +215,6 @@ const resolvers = {
     },
     createUser: (root, args) => {
       const user = new User({ username: args.username, favoriteGenre: args.favoriteGenre })
-
-      console.log({ user })
-
       return user.save()
         .catch(error => {
           throw new UserInputError(error.message, {

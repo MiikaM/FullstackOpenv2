@@ -1,14 +1,10 @@
-
 import React from 'react'
-
 
 const Authors = (props) => {
   
   if (!props.show) {
     return null
   }
-
-  console.log({ props })
 
   const authors = props.authors
 
