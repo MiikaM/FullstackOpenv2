@@ -1,3 +1,8 @@
+interface Exercises {
+  target: number,
+  exerciseDays: Array<number>
+}
+
 interface Result {
   periodLength: number,
   trainingDays: number,
@@ -7,6 +12,26 @@ interface Result {
   target: number,
   average: number
 }
+
+const parseArgs = (args: Array<string>): Exercises => {
+  if (args.length < 4) throw new Error('Not enough arguments');
+  if (isNaN(Number(args[2]))) throw new Error('Provided values were not numbers')
+  let arrayNum = []
+
+  for (let i = 3; i < args.length; i++) {
+    if(!isNaN(Number(args[i]))) {
+      arrayNum.push(Number(args[i]))
+    } else throw new Error('Provided values were not numbers')
+  }
+
+  console.log({arrayNum})
+
+  return {
+    target: Number(args[2]),
+    exerciseDays: arrayNum
+  }
+}
+
 const exerciseCalc = (hours: Array<number>, target: number): Result => {
   let trainingDays = 0;
 
@@ -50,7 +75,8 @@ const exerciseCalc = (hours: Array<number>, target: number): Result => {
 }
 
 try {
-  console.log(exerciseCalc([3, 0, 2, 4.5, 0, 3, 1], 2))
+  const {target, exerciseDays } = parseArgs(process.argv);
+  console.log(exerciseCalc(exerciseDays, target))
 } catch (e) {
   console.log('Error: ', e.message)
 }
