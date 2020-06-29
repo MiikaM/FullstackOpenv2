@@ -7,7 +7,7 @@ interface Result {
   periodLength: number,
   trainingDays: number,
   success: boolean,
-  rating: number, 
+  rating: number,
   ratingDescription: string,
   target: number,
   average: number
@@ -19,12 +19,12 @@ const parseArgs = (args: Array<string>): Exercises => {
   let arrayNum = []
 
   for (let i = 3; i < args.length; i++) {
-    if(!isNaN(Number(args[i]))) {
+    if (!isNaN(Number(args[i]))) {
       arrayNum.push(Number(args[i]));
     } else throw new Error(`Provided value: '${args[i]}', was not a number`);
   }
 
-  console.log({arrayNum})
+  console.log({ arrayNum })
 
   return {
     target: Number(args[2]),
@@ -32,23 +32,22 @@ const parseArgs = (args: Array<string>): Exercises => {
   }
 }
 
-const exerciseCalc = (hours: Array<number>, target: number): Result => {
+export const exerciseCalc = (hours: Array<number>, target: number): Result => {
   let trainingDays = 0;
 
   hours.forEach(day => {
-    if(day > 0) trainingDays++;
+    if (day > 0) trainingDays++;
   });
 
-  let total = hours.reduce((a,b) => {
-    return a+b;
-  }) 
+  let total = hours.reduce((a, b) => {
+    return a + b;
+  })
 
-  let average = total/hours.length;
-
-  let rating = average/target;
+  let average = total / hours.length;
+  let rating = average / target;
   let ratingDescription = '';
 
-  if (rating < 0.75 ) { 
+  if (rating < 0.75) {
     rating = 1;
     ratingDescription = 'You can do better!';
   } else if (rating < 1) {
@@ -56,7 +55,7 @@ const exerciseCalc = (hours: Array<number>, target: number): Result => {
     ratingDescription = 'Nice job just a little harder next time!';
   } else if (rating > 1) {
     rating = 3;
-    ratingDescription = 'Good job, you achieved your targe, keep up the good work!';
+    ratingDescription = 'Good job, you achieved your target, keep up the good work!';
   }
 
   const success = (average > target);
@@ -71,11 +70,11 @@ const exerciseCalc = (hours: Array<number>, target: number): Result => {
     average: average
   }
 
- return exersiceAnalysis
+  return exersiceAnalysis
 }
 
 try {
-  const {target, exerciseDays } = parseArgs(process.argv);
+  const { target, exerciseDays } = parseArgs(process.argv);
   console.log(exerciseCalc(exerciseDays, target))
 } catch (e) {
   console.log('Error: ', e.message)
