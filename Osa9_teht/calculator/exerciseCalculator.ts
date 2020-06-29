@@ -15,13 +15,13 @@ interface Result {
 
 const parseArgs = (args: Array<string>): Exercises => {
   if (args.length < 4) throw new Error('Not enough arguments');
-  if (isNaN(Number(args[2]))) throw new Error('Provided values were not numbers')
+  if (isNaN(Number(args[2]))) throw new Error('Provided target value was not a number')
   let arrayNum = []
 
   for (let i = 3; i < args.length; i++) {
     if(!isNaN(Number(args[i]))) {
-      arrayNum.push(Number(args[i]))
-    } else throw new Error('Provided values were not numbers')
+      arrayNum.push(Number(args[i]));
+    } else throw new Error(`Provided value: '${args[i]}', was not a number`);
   }
 
   console.log({arrayNum})
