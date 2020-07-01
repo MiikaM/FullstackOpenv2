@@ -14,9 +14,13 @@ export interface CoursePartBase {
   exerciseCount: number;
 }
 
-interface CoursePartOne extends CoursePartBase {
+interface CoursePartDescription extends CoursePartBase {
+  description?: string
+}
+
+interface CoursePartOne extends CoursePartDescription {
   name: "Fundamentals";
-  description: string;
+  description?: string;
 }
 
 interface CoursePartTwo extends CoursePartBase {
@@ -24,13 +28,20 @@ interface CoursePartTwo extends CoursePartBase {
   groupProjectCount: number;
 }
 
-interface CoursePartThree extends CoursePartBase {
+interface CoursePartThree extends CoursePartDescription {
   name: "Deeper type usage";
-  description: string;
+  description?: string;
   exerciseSubmissionLink: string;
 }
 
-export type CoursePart = CoursePartOne | CoursePartTwo | CoursePartThree;
+interface CoursePartFour extends CoursePartDescription {
+  name: "Typescript to win!";
+  exerciseCount: number;
+  description: string;
+  author: string;
+}
+
+export type CoursePart = CoursePartOne | CoursePartTwo | CoursePartThree | CoursePartFour;
 
 
 const App: FC = () => {
@@ -54,6 +65,12 @@ const App: FC = () => {
       exerciseCount: 14,
       description: "Confusing description",
       exerciseSubmissionLink: "https://fake-exercise-submit.made-up-url.dev"
+    },
+    {
+      name: "Typescript to win!",
+      exerciseCount: 27,
+      description: 'Having fun with typescript',
+      author: "Miika Mikkonen"
     }
   ];
 
