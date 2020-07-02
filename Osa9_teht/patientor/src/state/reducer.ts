@@ -16,29 +16,23 @@ export type Action =
     payload: Patient;
   };
 
-export const setPatientList = (patients: Patient[]): (dispatch: any) => void => {
-  return dispatch => {
-    dispatch({
+export const setPatientList = (patients: Patient[]): Action => {
+  return {
       type: "SET_PATIENT_LIST",
       payload: patients
-    });
   };
 };
 
-export const addPatient = (patient: Patient): (dispatch: any) => void => {
-  return dispatch => {
-    dispatch({
+export const addPatient = (patient: Patient): Action => {
+  return {
       type: "ADD_PATIENT",
       payload: patient
-    });
   };
 };
-export const setPatient = (patient: Patient): (dispatch: any) => void => {
-  return dispatch => {
-    dispatch({
+export const setPatient = (patient: Patient): Action => {
+  return {
       type: "SET_INDIVIDUAL_PATIENT",
       payload: patient
-    });
   };
 };
 
