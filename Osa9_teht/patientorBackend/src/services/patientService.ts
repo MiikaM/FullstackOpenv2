@@ -1,4 +1,4 @@
-import patientData from '../../data/patients.json';
+import patientData from '../../data/patients';
 const { v1: uuid } = require('uuid')//eslint-disable-line
 
 
@@ -11,12 +11,13 @@ const getEntries = (): Array<PatientEntry> => {
 };
 
 const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
-  return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
+  return patients.map(({ id, name, dateOfBirth, gender, occupation, entries }) => ({
     id,
     name,
     dateOfBirth,
     gender,
-    occupation
+    occupation,
+    entries
   }));
 };
 
@@ -34,6 +35,7 @@ const addEntry = (entry: NewPatientEntry): PatientEntry => {
 };
 
 const findById = (id: string): PatientEntry | undefined => {
+
   const entry = patients.find(d => d.id === id);
   return entry;
 };

@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NewPatientEntry } from './types';
-
-enum Gender {
-  Male = 'male',
-  Female = 'female',
-  Other = 'other'
-}
+import { NewPatientEntry, Gender } from './types';
 
 const toNewPatientEntry = (object: any): NewPatientEntry => {
   console.log('Object on ', object);
@@ -43,14 +37,17 @@ const parseDate = (date: any): string => {
 };
 
 
-const parseGender = (gender: any): string => {
+const parseGender = (gender: any): Gender => {
   console.log('gender on ', gender);
+  const genderEnum = Object.values(Gender).find(g => g === gender);
 
-  if (!isGender(gender) || !isString(gender)) {
+  console.log({genderEnum});
+
+  if (!isGender(gender) || !isString(gender) || !genderEnum) {
     throw new Error('Incorrect Gender input: ' + gender);
   }
 
-  return gender;
+  return genderEnum;
 };
 
 const parseName = (name: any): string => {
