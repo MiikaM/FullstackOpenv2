@@ -5,7 +5,8 @@ import { NewPatientEntry } from './types';
 
 enum Gender {
   Male = 'male',
-  Female = 'female'
+  Female = 'female',
+  Other = 'other'
 }
 
 const toNewPatientEntry = (object: any): NewPatientEntry => {

@@ -1,15 +1,46 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { State } from "./state";
 import { Patient } from "../types";
 
 export type Action =
   | {
-      type: "SET_PATIENT_LIST";
-      payload: Patient[];
-    }
+    type: "SET_PATIENT_LIST";
+    payload: Patient[];
+  }
   | {
-      type: "ADD_PATIENT";
-      payload: Patient;
-    };
+    type: "ADD_PATIENT";
+    payload: Patient;
+  }
+  | {
+    type: "SET_INDIVIDUAL_PATIENT";
+    payload: Patient;
+  };
+
+export const setPatientList = (patients: Patient[]): (dispatch: any) => void => {
+  return dispatch => {
+    dispatch({
+      type: "SET_PATIENT_LIST",
+      payload: patients
+    });
+  };
+};
+
+export const addPatient = (patient: Patient): (dispatch: any) => void => {
+  return dispatch => {
+    dispatch({
+      type: "ADD_PATIENT",
+      payload: patient
+    });
+  };
+};
+export const setPatient = (patient: Patient): (dispatch: any) => void => {
+  return dispatch => {
+    dispatch({
+      type: "SET_INDIVIDUAL_PATIENT",
+      payload: patient
+    });
+  };
+};
 
 export const reducer = (state: State, action: Action): State => {
   switch (action.type) {
@@ -29,6 +60,14 @@ export const reducer = (state: State, action: Action): State => {
         ...state,
         patients: {
           ...state.patients,
+          [action.payload.id]: action.payload
+        }
+      };
+    case "SET_INDIVIDUAL_PATIENT":
+      console.log('action payload', action.payload);
+      return {
+        ...state,
+        patients: {
           [action.payload.id]: action.payload
         }
       };

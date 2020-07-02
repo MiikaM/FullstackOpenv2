@@ -23,6 +23,7 @@ const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
 const addEntry = (entry: NewPatientEntry): PatientEntry => {
   const newPatientEntry = {
     id: String(uuid()), //eslint-disable-line
+    entries: [],
     ...entry
   };
 

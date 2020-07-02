@@ -10,6 +10,7 @@ router.get('/', (_req, res) => {
 });
 
 router.get('/:id', (req, res) => {
+  console.log('req id ', req.params.id);
   const patient = patientService.findById((req.params.id));
 
   if (patient) {
