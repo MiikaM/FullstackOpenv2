@@ -1,13 +1,13 @@
 import React from "react";
 import axios from "axios";
-import _ from 'lodash';
 
-import { Container, Header, Table } from "semantic-ui-react";
+import { Container, Header } from "semantic-ui-react";
 import { useParams } from 'react-router-dom';
 
-import { Patient, Entry, Diagnosis } from "../types";
+import { Patient, Entry } from "../types";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, setPatient } from "../state";
+import Part from '../components/EntryType';
 
 
 const PatientPage: React.FC = () => {
@@ -47,21 +47,6 @@ const PatientPage: React.FC = () => {
 
   console.log({ entries });
 
-  const DiagnosisCodeView = (diagnosisCodes: Array<Diagnosis['code']>): JSX.Element | JSX.Element[] => {
-    if (!diagnosisCodes) return <div></div>;
-
-    const diagnosisArray = Object.values(diagnosisCodes).map(d => d);
-    const diagnosisCodeList = _.pick(diagnoses, diagnosisArray);
-
-    return (
-      Object.values(diagnosisCodeList).map((code) => (
-        <Table.Row key={code.code}>
-          <Table.Cell>
-            {code.code} {code.name}
-          </Table.Cell>
-        </Table.Row>
-      )));
-  };
 
   return (
     <div>
@@ -73,22 +58,9 @@ const PatientPage: React.FC = () => {
         <Header as='h2'>entries</Header>
       </Container>
       {
-        entries.map((entry: Entry) => (
-          <Table celled key={entry.id}>
-            <Table.Body >
-              <Table.Row>
-                <Table.Cell>{entry.date} {entry.description}</Table.Cell>
-              </Table.Row>
-            </Table.Body>
-            <Table.Body>
-              {
-                entry.diagnosisCodes !== undefined ?
-                  DiagnosisCodeView({ ...entry.diagnosisCodes }) :
-                  null
-              }
-            </Table.Body>
-          </Table>
-        ))}
+        entries.map((entry: Entry) =>
+          <Part key={entry.id} entry={entry} />
+        )}
 
     </div>
   );
