@@ -1,8 +1,7 @@
 import patientData from '../../data/patients';
 const { v1: uuid } = require('uuid')//eslint-disable-line
+import { PatientEntry, NonSensitivePatientEntry, NewPatientEntry, NewEntry, Entry } from '../types';
 
-
-import { PatientEntry, NonSensitivePatientEntry, NewPatientEntry } from '../types';
 
 const patients: Array<PatientEntry> = patientData;
 
@@ -21,17 +20,38 @@ const getNonSensitiveEntries = (): NonSensitivePatientEntry[] => {
   }));
 };
 
-const addEntry = (entry: NewPatientEntry): PatientEntry => {
+const addPatientEntry = (entry: NewPatientEntry): PatientEntry => {
   const newPatientEntry = {
     id: String(uuid()), //eslint-disable-line
     entries: [],
     ...entry
   };
 
-  console.log({newPatientEntry});
+  console.log({ newPatientEntry });
 
   patients.push(newPatientEntry);
   return newPatientEntry;
+};
+
+const addEntry = (entry: NewEntry, id: string): NewEntry => {
+  console.log({ entry, id });
+
+  if (!entry) return entry;
+
+  const patientInfo = patients.find(patient => patient.id === id);
+
+  const newPatientEntry = {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    id: String(uuid()),
+    ...entry
+  } as Entry;
+
+  if (!patientInfo) return newPatientEntry;
+
+  patientInfo.entries.push(newPatientEntry);
+
+  return newPatientEntry;
+
 };
 
 const findById = (id: string): PatientEntry | undefined => {
@@ -42,6 +62,7 @@ const findById = (id: string): PatientEntry | undefined => {
 
 export default {
   getEntries,
+  addPatientEntry,
   addEntry,
   findById,
   getNonSensitiveEntries
