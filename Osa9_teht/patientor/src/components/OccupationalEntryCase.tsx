@@ -1,15 +1,34 @@
 import React, { FC } from 'react';
-import { OccupationalHealthcareEntry } from '../types';
-import { Table } from 'semantic-ui-react';
+import { OccupationalHealthcareEntry, iconColors } from '../types';
+import { Table, Icon } from 'semantic-ui-react';
 import DiagnosisCodeView from './DiagnosisCodeView';
 
 const OccupationalEntryCase: FC<{ entry: OccupationalHealthcareEntry }> = ({ entry }) => {
+  let color: iconColors;
+  switch (entry.healthCheckRating) {
+    case 0:
+      color = 'red' as iconColors;
+      break;
+    case 1:
+      color = 'green' as iconColors;
+      break;
+    case 2:
+      color = 'yellow' as iconColors;
+      break;
+    case 3:
+      color = 'brown' as iconColors;
+      break;
+    default:
+      break;
+  }
+
   return (
     <Table>
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>
-            {entry.date} {entry.type}
+            {entry.date}
+            <Icon className={`user md icon`} size='big' />
           </Table.HeaderCell>
         </Table.Row>
       </Table.Header>
@@ -36,7 +55,10 @@ const OccupationalEntryCase: FC<{ entry: OccupationalHealthcareEntry }> = ({ ent
         }
         <Table.Row>
           <Table.Cell>
-            {entry.healthCheckRating}
+            {color ?
+              <Icon className={`heart icon`} size='small' color={color} /> :
+              null
+            }
           </Table.Cell>
         </Table.Row>
       </Table.Body>

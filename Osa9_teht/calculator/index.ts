@@ -1,20 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import express from 'express';
 import { calculateBmi } from './bmiCalculator';
-import { exerciseCalc } from './exerciseCalculator'
+import { exerciseCalc } from './exerciseCalculator';
 const app = express();
-app.use(express.json())
+app.use(express.json());
 
 app.get('/hello', (_req, res) => {
   res.send('Hello Full Stack!');
 });
 
 app.get('/bmi', (req, res) => {
-  const { height, weight } = req.query
-  console.log({ height, weight })
+  const { height, weight } = req.query;
+  console.log({ height, weight });
 
   if (isNaN(Number(weight)) || isNaN(Number(height))) {
-    const err = new Error('malformatted parameters')
-    console.log({ err })
+    const err = new Error('malformatted parameters');
+    console.log({ err });
     res.json({ error: err.message });
   }
   const bmi = calculateBmi(Number(height), Number(weight));
@@ -22,29 +23,28 @@ app.get('/bmi', (req, res) => {
     weight: weight,
     height: height,
     bmi: bmi
-  }
+  };
 
   res.json(response);
 });
 
-app.post('/exercises', (req, res) => {
-  let dailyExercise = req.body.daily_exercises
-  console.log({ dailyExercise })
+app.post('/exercises', (req: any, res) => {
+  const dailyExercise: number[] = req.body.daily_exercises as number[];
 
-  const target = req.body.target
+  const target: number = req.body.target as number;
 
   if (!target || !dailyExercise || dailyExercise.length < 1) {
-    return res.status(400).json({ error: 'Parameters missing!' })
+    return res.status(400).json({ error: 'Parameters missing!' });
   }
 
-  if (isNaN(Number(target))|| dailyExercise.some(isNaN)) {
-    return res.status(400).json({ error: 'malformatted parameters' })
+  if (isNaN(Number(target)) || dailyExercise.some(isNaN)) {
+    return res.status(400).json({ error: 'malformatted parameters' });
   }
 
-  const response = exerciseCalc(dailyExercise, target)
+  const response = exerciseCalc(dailyExercise, target);
 
-  return res.json(response)
-})
+  return res.json(response);
+});
 
 const PORT = 3003;
 

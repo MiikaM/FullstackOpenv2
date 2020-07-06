@@ -43,6 +43,8 @@ export enum HealthCheckRating {
   "CriticalRisk" = 3
 }
 
+export type iconColors = 'red' | 'green' | 'yellow' | 'brown' | undefined;
+
 export interface HospitalEntry extends BaseEntry {
   type: "Hospital";
   discharge: {

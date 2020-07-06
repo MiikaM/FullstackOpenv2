@@ -6,18 +6,18 @@ import { useParams } from 'react-router-dom';
 
 import { Patient, Entry } from "../types";
 import { apiBaseUrl } from "../constants";
-import { useStateValue, setPatient, addEntry } from "../state";
+import { useStateValue, setPatient, addEntry, } from "../state";
 import Part from '../components/EntryType';
 import AddEntryModal from '../AddEntryModal';
 import { EntryFormValues } from "../AddEntryModal/AddEntryForm";
+import GenderIcon from "../components/GenderIcon";
 
 
 
 const PatientPage: React.FC = () => {
-  const [{ patients }, dispatch] = useStateValue();
-  const [{ diagnoses }] = useStateValue();
+  const [{ patient }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
-  const patient = Object.values(patients).map((patient: Patient) => patient);
+  const [{ diagnoses }] = useStateValue();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
@@ -70,21 +70,22 @@ const PatientPage: React.FC = () => {
       }
     };
 
-    fetchPatient();
+    if (patient === null || patient.id !== id ) {
+      fetchPatient();
+    }
 
-  }, [dispatch, id]);
+  }, [dispatch]);
 
   console.log({ id });
-  console.log({ patients });
   console.log({ patient });
   console.log({ diagnoses });
 
 
-  if (patient.length > 1 || patient.length < 1) {
+  if (!patient) {
     return null;
   }
 
-  const entries = Object.values(patient[0].entries).map((entry: Entry) => entry);
+  const entries = Object.values(patient.entries).map((entry: Entry) => entry);
 
   console.log({ entries });
 
@@ -92,10 +93,12 @@ const PatientPage: React.FC = () => {
   return (
     <div>
       <Container>
-        <Header as='h1'>{patient[0].name}</Header>
-        <p>gender: {patient[0].gender}</p>
-        <p>ssn: {patient[0].ssn}</p>
-        <p>occupation: {patient[0].occupation}</p>
+        <Header as='h1'>
+          {patient.name}
+          <GenderIcon gender={patient.gender} />
+        </Header>
+        <p>ssn: {patient.ssn}</p>
+        <p>occupation: {patient.occupation}</p>
         <Header as='h2'>entries</Header>
       </Container>
       {entries !== undefined ?

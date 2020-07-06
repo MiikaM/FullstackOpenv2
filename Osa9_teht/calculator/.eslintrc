@@ -14,6 +14,7 @@
     "@typescript-eslint/no-explicit-any": 2,
     "@typescript-eslint/explicit-function-return-type": 0,
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "@typescript-eslint/no-unsafe-member-access": false,
     "no-case-declarations": 0
   },
   "parser": "@typescript-eslint/parser",

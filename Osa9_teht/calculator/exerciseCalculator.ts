@@ -15,8 +15,8 @@ interface Result {
 
 const parseArgs = (args: Array<string>): Exercises => {
   if (args.length < 4) throw new Error('Not enough arguments');
-  if (isNaN(Number(args[2]))) throw new Error('Provided target value was not a number')
-  let arrayNum = []
+  if (isNaN(Number(args[2]))) throw new Error('Provided target value was not a number');
+  const arrayNum = [];
 
   for (let i = 3; i < args.length; i++) {
     if (!isNaN(Number(args[i]))) {
@@ -24,13 +24,13 @@ const parseArgs = (args: Array<string>): Exercises => {
     } else throw new Error(`Provided value: '${args[i]}', was not a number`);
   }
 
-  console.log({ arrayNum })
+  console.log({ arrayNum });
 
   return {
     target: Number(args[2]),
     exerciseDays: arrayNum
-  }
-}
+  };
+};
 
 export const exerciseCalc = (hours: Array<number>, target: number): Result => {
   let trainingDays = 0;
@@ -39,11 +39,11 @@ export const exerciseCalc = (hours: Array<number>, target: number): Result => {
     if (day > 0) trainingDays++;
   });
 
-  let total = hours.reduce((a, b) => {
+  const total = hours.reduce((a, b) => {
     return a + b;
-  })
+  });
 
-  let average = total / hours.length;
+  const average = total / hours.length;
   let rating = average / target;
   let ratingDescription = '';
 
@@ -68,14 +68,14 @@ export const exerciseCalc = (hours: Array<number>, target: number): Result => {
     ratingDescription: ratingDescription,
     target: target,
     average: average
-  }
+  };
 
-  return exersiceAnalysis
-}
+  return exersiceAnalysis;
+};
 
 try {
   const { target, exerciseDays } = parseArgs(process.argv);
-  console.log(exerciseCalc(exerciseDays, target))
+  console.log(exerciseCalc(exerciseDays, target));
 } catch (e) {
-  console.log('Error: ', e.message)
+  console.log('Error: ', e.message as string);
 }
