@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
 
-import { makeStyles } from '@material-ui/core/styles'
 import {
   TableContainer,
   Table,
@@ -16,9 +15,6 @@ import {
 const UserSite = () => {
   const users = useSelector(state => state.users)
   const match = useRouteMatch('/users/:id')
-  console.log('UserSite: userit ovat', users)
-  console.log('Matchh on', match)
-  console.log('Matchh id on', match.params.id)
   const user = match
     ? users.find(user => user.id === match.params.id)
     : null
@@ -26,8 +22,6 @@ const UserSite = () => {
   if (!user) {
     return null
   }
-
-  console.log('User on', user)
 
   return (
     <div>

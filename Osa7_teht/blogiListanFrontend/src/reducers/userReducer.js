@@ -3,7 +3,6 @@ import userService from '../services/user'
 export const initializeUsers = () => {
   return async dispatch => {
     const users = await userService.getAll()
-    console.log('Userit ovat', users)
     dispatch({
       type: 'INIT_USERS',
       data: users

@@ -3,7 +3,6 @@ import { changeNotification } from './notificationReducer'
 
 
 export const createBlog = (blog) => {
-  console.log('Blog o')
   return async dispatch => {
     try {
       const newBlog = await blogService.create(blog)
@@ -60,7 +59,6 @@ export const vote = (id, blog) => {
 export const initializeBlogs = () => {
   return async dispatch => {
     const blogs = await blogService.getAll()
-    console.log('Blogit ovat', blogs)
     dispatch({
       type: 'INIT_ANECDOTES',
       data: blogs

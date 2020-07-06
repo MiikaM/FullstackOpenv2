@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  Switch, Route, Link, Redirect
+  Switch, Route, Link
 } from 'react-router-dom'
 import Container from '@material-ui/core/Container'
 
@@ -13,18 +13,13 @@ import BlogForm from './components/BlogForm'
 import UserList from './components/UserList'
 import Blog from './components/Blog'
 import UserSite from './components/UserSite'
-import { Button, Navbar, Nav } from 'react-bootstrap'
+import { Navbar, Nav } from 'react-bootstrap'
 
 
 
 import { getUser } from './reducers/loginReducer'
 import { initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/userReducer'
-
-
-//TODO: BACKEND: Kommentointi mahollisuus yksittäisen blogin näkymään {api/blogs/:id/comments}
-//TODO: Kommentointi Frontendiin
-//TODO: Tyylitellään
 
 
 const App = () => {
@@ -39,10 +34,9 @@ const App = () => {
 
   useEffect(() => {
     dispatch(getUser())
-  }, [])
+  }, []) //eslint-disable-line
 
   const handleLogOut = async () => {
-    window.location.href = 'http://localhost:3000/login'
     window.localStorage.clear()
   }
 
@@ -50,7 +44,7 @@ const App = () => {
     return (
       <div>
         <div className="navbar-header">
-          <a className="navbar-brand" href="#">BlogApp</a>
+          <a className="navbar-brand" href="/login">BlogApp</a>
         </div>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
@@ -83,7 +77,7 @@ const App = () => {
         {
           user !== null ?
             <p>{user.name} logged in
-              <Link variant='contained' color='primary' onClick={handleLogOut} to='/'> logout</Link>
+              <Link variant='contained' color='primary' onClick={handleLogOut} to='/login'> logout</Link>
             </p> :
             null
         }
