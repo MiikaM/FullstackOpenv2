@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
 
+import { makeStyles } from '@material-ui/core/styles'
 import {
   TableContainer,
   Table,
@@ -33,7 +34,13 @@ const UserSite = () => {
       <h2>{user.name}</h2>
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>Added Blogs</TableHead>
+          <TableHead>
+            <TableRow>
+              <TableCell>
+                Added Blogs
+              </TableCell>
+            </TableRow>
+          </TableHead>
           <TableBody>
             {
               user.blogs.map(blog =>

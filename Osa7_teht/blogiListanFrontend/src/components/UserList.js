@@ -11,20 +11,22 @@ import {
   Paper,
   Link
 } from '@material-ui/core'
-import UserSite from './UserSite'
 
 const UserList = () => {
   const users = useSelector(state => state.users)
   const sortedUsers = users.sort((a, b) => b.blogs.length - a.blogs.length)
-
-
 
   return (
     <div id='userList'>
       <h2>Users</h2>
       <TableContainer component={Paper}>
         <Table>
-          <TableHead align='right'>Blogs created</TableHead>
+          <TableHead >
+            <TableRow>
+              <TableCell align='left'>Users</TableCell>
+              <TableCell >Blogs created</TableCell>
+            </TableRow>
+          </TableHead>
           <TableBody>
             {sortedUsers.map(user =>
               <TableRow key={user.id}>

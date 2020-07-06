@@ -2,8 +2,13 @@ import React from 'react'
 import Blog from './Blog'
 import { useSelector } from 'react-redux'
 import {
+  Link,
   TableContainer,
   Paper,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell
 } from '@material-ui/core'
 
 
@@ -15,10 +20,18 @@ const BlogList = () => {
     <div id='blogList'>
       <h2>Blogs</h2>
       <TableContainer component={Paper}>
-        {
-          sortedBlogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
-          )}
+        <Table>
+          <TableBody>
+            {
+              sortedBlogs.map(blog =>
+                <TableRow key={blog.id}>
+                  <TableCell>
+                    <Link href={`/blogs/${blog.id}`} color='inherit'>{blog.title}</Link>
+                  </TableCell>
+                </TableRow>
+              )}
+          </TableBody>
+        </Table>
       </TableContainer>
     </div>
   )

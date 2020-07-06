@@ -1,27 +1,22 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useRouteMatch } from 'react-router-dom'
 import { vote, deleteBlog } from '../reducers/blogReducer'
 
 import { Button } from 'react-bootstrap'
 
 import {
-  TableCell,
-  TableRow,
-  TableBody,
-  Table
+  Link
 } from '@material-ui/core'
 
 
-const Blog = ({ blog }) => {
+const Blog = () => {
   const dispatch = useDispatch()
-  const [view, setView] = useState(false)
-
-  const hideWhenVisible = { display: view ? 'none' : '' }
-  const showWhenVisible = { display: view ? '' : 'none' }
-
-  const toggleView = () => {
-    setView(!view)
-  }
+  const blogs = useSelector(state => state.blogs)
+  const match = useRouteMatch('/blogs/:id')
+  const blog = match
+    ? blogs.find(blog => blog.id === match.params.id)
+    : null
 
   const deleteObject = () => {
     dispatch(deleteBlog(blog.id))
@@ -31,43 +26,25 @@ const Blog = ({ blog }) => {
     dispatch(vote(blog.id, blog))
   }
 
+  if (!blog) {
+    return null
+  }
+
 
   return (
-    <Table>
-      <TableBody>
-        <TableRow className='blog' style={hideWhenVisible}>
-          <TableCell >
-            {blog.title} {blog.author}
-            <Button variant='contained' color='primary' onClick={toggleView}>view</Button>
-          </TableCell>
-        </TableRow>
-      </TableBody >
-      <TableBody className='blog2' style={showWhenVisible}>
-        <TableRow >
-          <TableCell>
-            Title: {blog.title} <Button variant='contained' color='default' onClick={toggleView}>hide</Button> <br />
-          </TableCell>
-        </TableRow >
-        <TableRow>
-          <TableCell>
-            url: {blog.url} <br />
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
-            likes: {blog.likes}
-            <Button variant='contained' color='primary' onClick={handleLike}>like</Button><br />
-          </TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell>
-            Author: {blog.author} <br />
-            <Button variant='contained' color='primary' onClick={deleteObject}>remove</Button>
-          </TableCell>
-        </TableRow >
-      </TableBody>
-    </Table>
+    <div>
+      <h2>
+        {blog.title} by {blog.author}
+      </h2>
 
+      <Link to={blog.url}> url: {blog.url}</Link>
+      <p>
+        likes: {blog.likes}
+        <Button variant='contained' color='secondary' onClick={handleLike}>like</Button><br />
+        Added by: {blog.author.name}
+        <Button variant='contained'  onClick={deleteObject}>remove</Button>
+      </p>
+    </div>
   )
 }
 

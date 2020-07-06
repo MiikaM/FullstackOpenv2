@@ -53,7 +53,7 @@ const toNewHospitalEntry = (object: any): NewHospitalEntry => {
   if (object.diagnosisCodes) codes = parseDiagnosisCodes(object.diagnosisCodes);
 
   const hospitalEntry: NewHospitalEntry = {
-    type: EntryType.HospitalEntry,
+    type: "Hospital",
     description: parseText(object.description),
     date: parseDate(object.date),
     specialist: parseText(object.specialist),
@@ -82,7 +82,7 @@ const toNewOccupationalEntry = (object: any): NewOccupationalHealthcareEntry => 
   if (object.diagnosisCodes) codes = parseDiagnosisCodes(object.diagnosisCodes);
 
   const newOccupationalEntry: NewOccupationalHealthcareEntry = {
-    type: EntryType.OccupationalHealthcareEntry,
+    type: "OccupationalHealthcare",
     description: parseText(object.description),
     date: parseDate(object.date),
     specialist: parseText(object.specialist),
@@ -102,7 +102,7 @@ const toNewHealthCheckEntry = (object: any): NewHealthCheckEntry => {
   if (object.diagnosisCodes) codes = parseDiagnosisCodes(object.diagnosisCodes);
 
   const newHealthCheckEntry: NewHealthCheckEntry = {
-    type: EntryType.HealthCheckEntry,
+    type: "HealthCheck",
     description: parseText(object.description),
     date: parseDate(object.date),
     specialist: parseText(object.specialist),

@@ -33,7 +33,7 @@ const addPatientEntry = (entry: NewPatientEntry): PatientEntry => {
   return newPatientEntry;
 };
 
-const addEntry = (entry: NewEntry, id: string): NewEntry => {
+const addEntry = (entry: NewEntry, id: string): Entry => {
   console.log({ entry, id });
 
   if (!entry) return entry;
