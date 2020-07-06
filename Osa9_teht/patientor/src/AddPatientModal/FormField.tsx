@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { ErrorMessage, Field, FieldProps, FormikProps } from "formik";
 import { Dropdown, DropdownProps, Form } from "semantic-ui-react";
@@ -17,7 +18,6 @@ export type EntryOption = {
 // props for select field component
 type SelectFieldProps = {
   id: string;
-  onChange: (event: any) => void;
   name: string;
   label: string;
   options: any[];
@@ -28,11 +28,10 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   name,
   label,
   options,
-  onChange
 }: SelectFieldProps) => (
     <Form.Field>
       <label>{label}</label>
-      <Field id={id} as="select" name={name} className="ui dropdown" onChange={onChange}>
+      <Field id={id} as="select" name={name} className="ui dropdown">
         {options.map((option: any) => (
           <option key={option.value} value={option.value}>
             {option.label || option.value}

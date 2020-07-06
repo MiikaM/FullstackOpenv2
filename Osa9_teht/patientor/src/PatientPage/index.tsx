@@ -17,7 +17,6 @@ import GenderIcon from "../components/GenderIcon";
 const PatientPage: React.FC = () => {
   const [{ patient }, dispatch] = useStateValue();
   const { id } = useParams<{ id: string }>();
-  const [{ diagnoses }] = useStateValue();
 
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
@@ -32,24 +31,10 @@ const PatientPage: React.FC = () => {
 
   const submitNewEntry = async (values: EntryFormValues) => {
     try {
-      console.log({ values });
-      const HospitalEntry = {
-        type: values.type,
-        discharge: {
-          date: values.discharge.date,
-          criteria: values.discharge.criteria
-        },
-        healthCheckRating: values.healthCheckRating,
-        description: values.description,
-        date: values.date,
-        specialist: values.specialist,
-        diagnosisCodes: values.diagnosisCodes
-      };
       const { data: newEntry } = await axios.post<Entry>(
         `${apiBaseUrl}/patients/${id}/entries`,
-        HospitalEntry
+        values
       );
-      console.log({ newEntry });
       dispatch(addEntry(newEntry, id));
       closeModal();
     } catch (e) {
@@ -59,11 +44,9 @@ const PatientPage: React.FC = () => {
   };
 
   React.useEffect(() => {
-    console.log({ id });
     const fetchPatient = async () => {
       try {
         const { data: fetchedPatient } = await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`);
-        console.log({ fetchedPatient });
         dispatch(setPatient(fetchedPatient));
       } catch (e) {
         console.error(e);
@@ -74,21 +57,13 @@ const PatientPage: React.FC = () => {
       fetchPatient();
     }
 
-  }, [dispatch]);
-
-  console.log({ id });
-  console.log({ patient });
-  console.log({ diagnoses });
-
+  }, [dispatch, id, patient]);
 
   if (!patient) {
     return null;
   }
 
   const entries = Object.values(patient.entries).map((entry: Entry) => entry);
-
-  console.log({ entries });
-
 
   return (
     <div>

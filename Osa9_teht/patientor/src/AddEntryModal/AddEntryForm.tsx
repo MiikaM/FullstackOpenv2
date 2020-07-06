@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 import { useStateValue } from "../state";
@@ -21,23 +21,7 @@ const entryOptions: EntryOption[] = [
 
 
 const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
-  const [type, setType] = useState("");
-
   const [{ diagnoses }] = useStateValue();
-
-  console.log({ diagnoses });
-
-  const handleType = (event: any) => {
-    event.preventDefault();
-    const index = event.target.options.selectedIndex;
-    console.log('eventti on', event.target.options);
-
-    setType(event.target.options[index].value);
-
-    console.log({ type });
-  };
-
-  console.log({ type });
 
   return (<Formik
     initialValues={{
@@ -80,7 +64,6 @@ const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
       <Form className="form ui">
         <SelectField
           id="Type"
-          onChange={handleType}
           label="Type"
           name="type"
           options={entryOptions}

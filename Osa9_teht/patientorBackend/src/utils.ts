@@ -19,7 +19,6 @@ import _ from 'lodash';
 const diagnoses: Array<Diagnosis> = diagnoseData;
 
 const toNewPatient = (object: any): NewPatientEntry => {
-  console.log('Object on ', object);
   return {
     name: parseText(object.name),
     dateOfBirth: parseDate(object.dateOfBirth),
@@ -31,7 +30,6 @@ const toNewPatient = (object: any): NewPatientEntry => {
 };
 
 const toNewEntry = (object: any): NewEntry => {
-  console.log('Object on ', object);
   const type = parseType(object.type);
 
   switch (type) {
@@ -144,14 +142,10 @@ const isType = (type: any): boolean => {
 const isDiagnosisCodes = (diagnosisCodes: any): boolean => {
   const diagnosesMapped = diagnoses.map(d => d.code);
 
-  console.log({ diagnosesMapped });
-  console.log({ diagnosisCodes });
-
   if (diagnosisCodes.length > 0) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     const intersection = _.intersection(diagnosesMapped, diagnosisCodes);
 
-    console.log({ intersection });
     if (!intersection || intersection.length < 1) return false;
   }
 
@@ -167,8 +161,6 @@ const isHealthRating = (rating: any): boolean => {
 
 
 const parseDate = (date: any): string => {
-  console.log('date on ', date);
-
   if (!date || !isString(date) || !isDate(date)) {
     throw new Error('Incorrect or missing date: ' + date);
   }
@@ -177,10 +169,7 @@ const parseDate = (date: any): string => {
 
 
 const parseGender = (gender: any): Gender => {
-  console.log('gender on ', gender);
   const genderEnum = Object.values(Gender).find(g => g === gender);
-
-  console.log({ genderEnum });
 
   if (!isGender(gender) || !isString(gender) || !genderEnum) {
     throw new Error('Incorrect Gender input: ' + gender);
@@ -190,7 +179,6 @@ const parseGender = (gender: any): Gender => {
 };
 
 const parseText = (text: any): string => {
-  console.log('text on ', text);
 
   if (!text || !isString(text)) {
     throw new Error('Incorrect or missing text: ' + text);
@@ -200,7 +188,6 @@ const parseText = (text: any): string => {
 };
 
 const parseType = (type: any): EntryType => {
-  console.log('type on ', type);
   const typeEnum = Object.values(EntryType).find(g => g === type);
 
   if (!type || !isString(type) || !isType(type) || !typeEnum) {
@@ -210,19 +197,17 @@ const parseType = (type: any): EntryType => {
 };
 
 const parseDiagnosisCodes = (diagnosisCodes: any): string[] | undefined => {
-  console.log('diagnosisCodes on ', diagnosisCodes);
   if (!diagnosisCodes) return undefined;
 
   if (!isDiagnosisCodes(diagnosisCodes) || !isStringArray(diagnosisCodes)) {
     throw new Error('Incorrect or missing diagnosisCodes: ' + diagnosisCodes);
   }
 
-  console.log({ diagnosisCodes });
+  ({ diagnosisCodes });
   return diagnosisCodes;
 };
 
 const parseHealthCheckRating = (healthCheckRating: any): number | undefined => {
-  console.log('healthCheckRating on ', healthCheckRating);
   if (!healthCheckRating) return undefined;
   if (!isHealthRating(healthCheckRating)) {
     throw new Error('Incorrect or missing healthCheckRating: ' + healthCheckRating);

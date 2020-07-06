@@ -27,14 +27,14 @@ const addPatientEntry = (entry: NewPatientEntry): PatientEntry => {
     ...entry
   };
 
-  console.log({ newPatientEntry });
+  ({ newPatientEntry });
 
   patients.push(newPatientEntry);
   return newPatientEntry;
 };
 
 const addEntry = (entry: NewEntry, id: string): Entry => {
-  console.log({ entry, id });
+  ({ entry, id });
 
   if (!entry) return entry;
 

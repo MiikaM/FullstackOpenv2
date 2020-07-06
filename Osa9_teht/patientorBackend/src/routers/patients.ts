@@ -10,7 +10,6 @@ router.get('/', (_req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  console.log('req id ', req.params.id);
   const patient = patientService.findById((req.params.id));
 
   if (patient) {
@@ -23,12 +22,9 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
 
   try {
-    console.log('req body(patients) on', req.body);
     const newPatientEntry = toNewPatient(req.body);
 
-    console.log({ newPatientEntry });
     const addedPatientEntry = patientService.addPatientEntry(newPatientEntry);
-    console.log({ addedPatientEntry });
     res.json(addedPatientEntry);
   } catch (e) {
     res.status(404).send(e.message);
@@ -36,16 +32,11 @@ router.post('/', (req, res) => {
 });
 
 router.post('/:id/entries', (req, res) => {
-  console.log('req query on ', req.params.id);
   const id = String(req.params.id);
 
   try {
-    console.log('req body (entries) on', req.body);
     const newEntry = toNewEntry(req.body);
-    console.log({id});
-    console.log({ newEntry });
     const addedEntry = patientService.addEntry(newEntry, id);
-    console.log({ addedEntry });
     res.json(addedEntry);
   } catch (e) {
     res.status(404).send(e.message);

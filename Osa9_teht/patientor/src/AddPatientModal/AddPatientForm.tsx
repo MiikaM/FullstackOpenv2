@@ -79,7 +79,6 @@ export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               component={TextField}
             />
             <SelectField
-              onChange= {(event: any) => console.log(event)}
               id="Gender"
               label="Gender"
               name="gender"
