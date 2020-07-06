@@ -27,6 +27,10 @@ const AuthorForm = (props) => {
   const submit = async (event) => {
     event.preventDefault()
     editBornYear({ variables: { name, setBornTo } })
+      .catch
+      (e => {
+        props.notify(e.message)
+      })
 
     setName('')
     setSBT(0)

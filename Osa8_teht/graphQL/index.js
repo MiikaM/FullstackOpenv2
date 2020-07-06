@@ -87,13 +87,41 @@ const resolvers = {
       return Author.find({})
     },
     allBooks: async (root, args) => {
+      let author = null
+      let booksByGenre = null
+
+      if (args.genre && args.author) {
+        try {
+          author = await Author.find({ name: args.author })
+          booksByGenre = await Book.find({ genres: args.genre, author: author })
+        } catch (e) {
+          throw new UserInputError('No such book or author, in the database', {
+            invalidArgs: args.author
+          })
+        }
+        if (booksByGenre !== null) return booksByGenre
+      }
+
+      if (args.author && args.author !== null) {
+        try {
+
+          author = await Author.find({ name: args.author })
+          booksByGenre = await Book.find({ author: author })
+        } catch (e) {
+          throw new UserInputError('No such book or author, in the database', {
+            invalidArgs: args.author
+          })
+        }
+        if(author) return booksByGenre
+      }
+
+
       if (args.genre && args.genre.length > 1) {
-        let booksByGenre = null
         try {
           booksByGenre = await Book.find({ genres: args.genre })
         } catch (error) {
           throw new UserInputError('No such genre in the database', {
-            invalidArgs: args.author
+            invalidArgs: args.genre
           })
         }
         return booksByGenre
@@ -108,14 +136,20 @@ const resolvers = {
   },
   Author: {
     bookCount: async (root) => {
-      const booksByAuthor = await Book.find({ author: root._id })
+      let author = null
+      if (root.name) {
+        author = await Author.findOne({ name: root.name })
+      } else {
+        author = root
+      }
+      const booksByAuthor = await Book.find({ author: author._id })
       return booksByAuthor.length
     }
   },
   Book: {
     author: async (root) => {
       const author = await Author.findById(root.author)
-      if(!author) {
+      if (!author) {
         return new UserInputError(`Author doesn't exist`, {
           invalidArgs: root
         })
@@ -145,8 +179,8 @@ const resolvers = {
           })
         }
       } catch (error) {
-        console.log('error yksi', { error })
-      } 
+        return new Error(error.message)
+      }
 
       try {
         let isAuthor = await Author.findOne({ name: args.author })
